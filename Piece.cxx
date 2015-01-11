@@ -1,4 +1,4 @@
-/** 
+/**
  * Mise en oeuvre de Piece.h
  *
  * @file Piece.cxx
@@ -52,7 +52,7 @@ bool
 Piece::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Piece" << endl;
-  return false;  
+  return false;
 }
 
 void
@@ -102,11 +102,11 @@ Piece::affiche()
        << ( m_white ? "blanche" : "noire" ) << endl;
 }
 
-char 
+char
 Piece::codePiece()
 {
-  if (m_white) return 'B';
-  return 'N';
+  if (m_white) return 'P';
+  return 'p';
 }
 
 Roi::Roi(bool white) : Piece(5,(white?1:8),white)
@@ -136,32 +136,32 @@ Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(whi
   cout << "Constructeur Reine" << endl;
 }
 
-bool 
+bool
 Roi::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Roi" << endl;
-  return false;  
+  return false;
 }
 
-bool 
+bool
 Tour::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Tour" << endl;
-  return false;  
+  return false;
 }
 
-bool 
+bool
 Fou::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Fou" << endl;
-  return false;  
+  return false;
 }
 
-bool 
+bool
 Reine::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Reine" << endl;
-  return Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y);  
+  return Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y);
 }
 
 char
@@ -170,19 +170,19 @@ Roi::codePiece()
   return (m_white)?'R':'r';
 }
 
-char 
+char
 Tour::codePiece()
 {
   return (m_white)?'T':'t';
 }
 
-char 
+char
 Fou::codePiece()
 {
   return (m_white)?'F':'f';
 }
 
-char 
+char
 Reine::codePiece()
 {
   return (m_white)?'Q':'q';

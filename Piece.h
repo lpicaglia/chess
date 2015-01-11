@@ -78,12 +78,5 @@ public:
   char codePiece();
 };
 
-class Pion : virtual public Piece
-{
-public:
-  Pion(bool white);
-  bool mouvementValide(Echiquier &e, int x, int y);
-  char codePiece();
-};
 
 #endif // !defined Piece_h
