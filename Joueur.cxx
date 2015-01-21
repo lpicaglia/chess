@@ -33,7 +33,7 @@ Joueur::Joueur(bool white)
   */
 }
 
-void 
+void
 Joueur::affiche()
 {
   /*
@@ -78,14 +78,18 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   Fou* fbr = new Fou(true, false);
   Tour* tbl = new Tour(true, true);
   Tour* tbr = new Tour(true, false);
-  
+  Cavalier* cbl = new Cavalier(true, true);
+  Cavalier* cbr = new Cavalier(true, false);
+
   m_pieces.push_back(rb);
   m_pieces.push_back(qb);
   m_pieces.push_back(fbl);
   m_pieces.push_back(fbr);
   m_pieces.push_back(tbl);
   m_pieces.push_back(tbr);
-  
+  m_pieces.push_back(cbl);
+  m_pieces.push_back(cbr);
+
   for (int i=1; i<=8; i++)
   {
 	  Piece* p = new Piece(i,2, true);
@@ -102,14 +106,18 @@ JoueurNoir::JoueurNoir() //: Joueur(false)
   Fou* fnr = new Fou(false, false);
   Tour* tnl = new Tour(false, true);
   Tour* tnr = new Tour(false, false);
-  
+  Cavalier* cnl = new Cavalier(false, true);
+  Cavalier* cnr = new Cavalier(false, false);
+
   m_pieces.push_back(rn);
   m_pieces.push_back(qn);
   m_pieces.push_back(fnl);
   m_pieces.push_back(fnr);
   m_pieces.push_back(tnl);
   m_pieces.push_back(tnr);
-  
+  m_pieces.push_back(cnl);
+  m_pieces.push_back(cnr);
+
   for (int i=1; i<=8; i++)
   {
 	  Piece* p = new Piece(i,7, false);

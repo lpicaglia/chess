@@ -73,7 +73,7 @@ public:
 class Cavalier : virtual public Piece
 {
 public:
-  Cavalier(bool white);
+  Cavalier(bool white, bool left);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
 };
