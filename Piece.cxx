@@ -11,6 +11,10 @@
 // Pour utiliser les flux de iostream sans mettre "std::" tout le temps.
 using namespace std;
 
+//---------------------------------------------------------------------------
+//                                 Classe Piece
+//---------------------------------------------------------------------------
+
 Piece::Piece()
 {
   // ne fait rien => objet instancie mais non valide.
@@ -109,6 +113,10 @@ Piece::codePiece()
   return 'p';
 }
 
+//---------------------------------------------------------------------------
+//                                 Classe Roi
+//---------------------------------------------------------------------------
+
 Roi::Roi(bool white) : Piece(5,(white?1:8),white)
 {
   cout << "Constructeur Roi" << endl;
@@ -121,26 +129,26 @@ Roi::roque()
   return false;
 }
 
-Tour::Tour(bool white, bool left) : Piece((left?1:8),(white?1:8),white)
-{
-  cout << "Constructeur Tour" << endl;
-}
-
-Fou::Fou(bool white, bool left) : Piece((left?3:6),(white?1:8),white)
-{
-  cout << "Constructeur Fou" << endl;
-}
-
-Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(white,true)
-{
-  cout << "Constructeur Reine" << endl;
-}
-
 bool
 Roi::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Roi" << endl;
   return false;
+}
+
+char
+Roi::codePiece()
+{
+  return (m_white)?'R':'r';
+}
+
+//---------------------------------------------------------------------------
+//                                 Classe Tour
+//---------------------------------------------------------------------------
+
+Tour::Tour(bool white, bool left) : Piece((left?1:8),(white?1:8),white)
+{
+  cout << "Constructeur Tour" << endl;
 }
 
 bool
@@ -150,11 +158,41 @@ Tour::mouvementValide(Echiquier &e, int x, int y)
   return false;
 }
 
+char
+Tour::codePiece()
+{
+  return (m_white)?'T':'t';
+}
+
+//---------------------------------------------------------------------------
+//                                 Classe Fou
+//---------------------------------------------------------------------------
+
+Fou::Fou(bool white, bool left) : Piece((left?3:6),(white?1:8),white)
+{
+  cout << "Constructeur Fou" << endl;
+}
+
 bool
 Fou::mouvementValide(Echiquier &e, int x, int y)
 {
   cout << "mouvementValide Fou" << endl;
   return false;
+}
+
+char
+Fou::codePiece()
+{
+  return (m_white)?'F':'f';
+}
+
+//---------------------------------------------------------------------------
+//                                 Classe Reine
+//---------------------------------------------------------------------------
+
+Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(white,true)
+{
+  cout << "Constructeur Reine" << endl;
 }
 
 bool
@@ -165,26 +203,30 @@ Reine::mouvementValide(Echiquier &e, int x, int y)
 }
 
 char
-Roi::codePiece()
-{
-  return (m_white)?'R':'r';
-}
-
-char
-Tour::codePiece()
-{
-  return (m_white)?'T':'t';
-}
-
-char
-Fou::codePiece()
-{
-  return (m_white)?'F':'f';
-}
-
-char
 Reine::codePiece()
 {
   return (m_white)?'Q':'q';
+}
+
+//---------------------------------------------------------------------------
+//                                 Classe Cavalier
+//---------------------------------------------------------------------------
+
+Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white)
+{
+  cout << "Constructeur Fou" << endl;
+}
+
+bool
+Cavalier::mouvementValide(Echiquier &e, int x, int y)
+{
+  cout << "mouvementValide Cavalier" << endl;
+  return false;
+}
+
+char
+Cavalier::codePiece()
+{
+  return (m_white)?'C':'c';
 }
 
