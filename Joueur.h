@@ -1,4 +1,4 @@
-/** 
+/**
  * Header de Joueur.cxx
  *
  * @file Joueur.h
@@ -13,8 +13,8 @@
 
 using namespace std;
 
-class Joueur 
-{
+class Joueur{
+
  protected:
   //Piece m_pieces[16];
   vector<Piece*> m_pieces;
@@ -27,14 +27,14 @@ class Joueur
   void placerPieces(Echiquier &e);
 };
 
-class JoueurBlanc : public Joueur
-{
+class JoueurBlanc : public Joueur{
+
  public:
   JoueurBlanc();
 };
 
-class JoueurNoir : public Joueur
-{
+class JoueurNoir : public Joueur{
+
  public:
   JoueurNoir();
 };

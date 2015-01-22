@@ -13,8 +13,8 @@ class Echiquier;
 /**
  * Declaration d'une classe modélisant une piece de jeu d'echec.
  */
-class Piece
-{
+class Piece{
+
 protected:
   int m_x;
   int m_y;
@@ -37,8 +37,8 @@ public:
   virtual char codePiece();
 };
 
-class Roi : public Piece
-{
+class Roi : public Piece{
+
 public:
   Roi(bool white);
   bool mouvementValide(Echiquier &e, int x, int y);
@@ -46,32 +46,32 @@ public:
   bool roque();
 };
 
-class Tour : virtual public Piece
-{
+class Tour : virtual public Piece{
+
 public:
   Tour(bool white, bool left);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
 };
 
-class Fou : virtual public Piece
-{
+class Fou : virtual public Piece{
+
 public:
   Fou(bool white, bool left);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
 };
 
-class Reine : public Tour, public Fou
-{
+class Reine : public Tour, public Fou{
+
 public:
   Reine(bool white);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
 };
 
-class Cavalier : virtual public Piece
-{
+class Cavalier : virtual public Piece{
+
 public:
   Cavalier(bool white, bool left);
   bool mouvementValide(Echiquier &e, int x, int y);
