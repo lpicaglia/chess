@@ -1,4 +1,4 @@
-/** 
+/**
  * Programme test de Piece
  *
  * @file testPiece.cxx
@@ -10,12 +10,13 @@
 #include "Joueur.h"
 #include "Echiquier.h"
 
+
 // Pour utiliser les flux de iostream sans mettre "std::" tout le temps.
 using namespace std;
 
 bool compare(Piece pa, Piece pb)
 {
-  if ( (pa.x()==pb.x()) && (pa.y()==pb.y()) ) 
+  if ( (pa.x()==pb.x()) && (pa.y()==pb.y()) )
     return true;
   return false;
 }
@@ -26,8 +27,6 @@ bool compare(Piece pa, Piece pb)
 int main( int argc, char** argv )
 {
 
-  //Joueur jb(true);
-  //Joueur jn(false);
   JoueurBlanc jb;
   JoueurNoir jn;
 

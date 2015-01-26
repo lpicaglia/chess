@@ -34,12 +34,7 @@ Joueur::Joueur(bool white)
 }
 
 void
-Joueur::affiche()
-{
-  /*
-  for (int i=0; i<16; i++)
-    m_pieces[i].affiche();
-  */
+Joueur::affiche(){
   vector<Piece*>::iterator p = m_pieces.begin();
   while ( p != m_pieces.end() )
     {
@@ -90,15 +85,13 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   m_pieces.push_back(cbl);
   m_pieces.push_back(cbr);
 
-  for (int i=1; i<=8; i++)
-  {
+  for (int i=1; i<=8; i++){
 	  Piece* p = new Piece(i,2, true);
 	  m_pieces.push_back(p);
   }
 }
 
-JoueurNoir::JoueurNoir() //: Joueur(false)
-{
+JoueurNoir::JoueurNoir(){
   cout << "Constructeur Joueur Noir" << endl;
   Roi* rn = new Roi(false);
   Reine* qn = new Reine(false);
@@ -118,8 +111,7 @@ JoueurNoir::JoueurNoir() //: Joueur(false)
   m_pieces.push_back(cnl);
   m_pieces.push_back(cnr);
 
-  for (int i=1; i<=8; i++)
-  {
+  for (int i=1; i<=8; i++){
 	  Piece* p = new Piece(i,7, false);
 	  m_pieces.push_back(p);
   }

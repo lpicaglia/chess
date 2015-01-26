@@ -17,7 +17,6 @@ using namespace std;
 
 Piece::Piece()
 {
-  // ne fait rien => objet instancie mais non valide.
   cout << "Constructeur Piece" << endl;
 }
 
