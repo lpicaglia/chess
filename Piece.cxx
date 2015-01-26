@@ -132,8 +132,18 @@ Roi::roque()
 bool
 Roi::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Roi" << endl;
-  return false;
+    if (x < 1 || y < 1 || x > 8 || y > 8) { //si sort du plateau
+		return false;
+	}
+
+    if ( (x - this->x()) > 1 || (y - this->y()) > 1) { //si deplacement de + d'une case
+		return false;
+	}
+	else
+    {
+        cout << "mouvementValide Roi" << endl;
+    }
+  return true;
 }
 
 char
@@ -214,14 +224,19 @@ Reine::codePiece()
 
 Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white)
 {
-  cout << "Constructeur Fou" << endl;
+  cout << "Constructeur Cavalier" << endl;
 }
 
 bool
 Cavalier::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Cavalier" << endl;
-  return false;
+    if (x < 1 || y < 1 || x > 8 || y > 8) //si la pièce sort du plateau
+    {
+            return false;
+    }
+
+    cout << "mouvementValide Cavalier" << endl;
+    return false;
 }
 
 char
