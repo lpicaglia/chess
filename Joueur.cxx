@@ -5,7 +5,7 @@ using namespace std;
 
 Joueur::Joueur()
 {
-  cout << "Constructeur Joueur defaut" << endl;
+  //cout << "Constructeur Joueur defaut" << endl;
 }
 
 Joueur::~Joueur()
@@ -16,7 +16,7 @@ Joueur::~Joueur()
       delete *p;
       p++;
     }
-  cout << "Destructeur Joueur" << endl;
+  //cout << "Destructeur Joueur" << endl;
 }
 
 Joueur::Joueur(bool white)
@@ -64,9 +64,21 @@ Joueur::placerPieces(Echiquier &e)
     }
 }
 
+void
+Joueur::setName(string name)
+{
+  joueurName = name;
+}
+
+string
+Joueur::getName()
+{
+  return joueurName;
+}
+
 JoueurBlanc::JoueurBlanc() //: Joueur(true)
 {
-  cout << "Constructeur Joueur Blanc" << endl;
+  //cout << "Constructeur Joueur Blanc" << endl;
   Roi* rb = new Roi(true);
   Reine* qb = new Reine(true);
   Fou* fbl = new Fou(true, true);
@@ -92,7 +104,7 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
 }
 
 JoueurNoir::JoueurNoir(){
-  cout << "Constructeur Joueur Noir" << endl;
+  //cout << "Constructeur Joueur Noir" << endl;
   Roi* rn = new Roi(false);
   Reine* qn = new Reine(false);
   Fou* fnl = new Fou(false, true);

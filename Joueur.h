@@ -17,6 +17,7 @@ class Joueur{
 
  protected:
   vector<Piece*> m_pieces;
+  string joueurName;
  public:
   Joueur();
   Joueur(bool white);
@@ -24,6 +25,8 @@ class Joueur{
   void affiche();
   bool isWhite();
   void placerPieces(Echiquier &e);
+  void setName(string name);
+  string getName();
 };
 
 class JoueurBlanc : public Joueur{

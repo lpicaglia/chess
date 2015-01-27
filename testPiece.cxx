@@ -26,9 +26,18 @@ bool compare(Piece pa, Piece pb)
  */
 int main( int argc, char** argv )
 {
+  string jbName, jnName;
 
   JoueurBlanc jb;
   JoueurNoir jn;
+
+  cout << "Veuillez saisir le nom du joueur blanc : ";
+  cin >> jbName;
+  jb.setName(jbName);
+
+  cout << "Veuillez saisir le nom du joueur noir : ";
+  cin >> jnName;
+  jn.setName(jnName);
 
   jb.affiche();
   jn.affiche();
@@ -70,4 +79,7 @@ int main( int argc, char** argv )
 
   // les objets definis dans cette fonction sont automatiquement détruits.
   // Ex : p1
+
+  cout << "Joueur blanc = " << jb.getName() << "\n";
+  cout << "Joueur noir = " << jn.getName() << "\n";
 }

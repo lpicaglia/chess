@@ -17,17 +17,17 @@ using namespace std;
 
 Piece::Piece()
 {
-  cout << "Constructeur Piece" << endl;
+  //cout << "Constructeur Piece" << endl;
 }
 
 Piece::~Piece()
 {
-   cout << "Destructeur Piece" << endl;
+  //cout << "Destructeur Piece" << endl;
 }
 
 Piece::Piece(const Piece & autre)
 {
-   cout << "Constructeur Piece par copie" << endl;
+   //cout << "Constructeur Piece par copie" << endl;
    m_x=autre.m_x;
    m_y=autre.m_y;
    m_white=autre.m_white;
@@ -36,7 +36,7 @@ Piece::Piece(const Piece & autre)
 Piece &
 Piece::operator=(const Piece & autre)
 {
-  cout << "Operateur affectation Piece" << endl;
+  //cout << "Operateur affectation Piece" << endl;
   m_x=autre.m_x;
   m_y=autre.m_y;
   m_white=autre.m_white;
@@ -45,7 +45,7 @@ Piece::operator=(const Piece & autre)
 
 Piece::Piece( int x, int y, bool white )
 {
-  cout << "Constructeur Piece Specialise" << endl;
+  //cout << "Constructeur Piece Specialise" << endl;
   m_x = x;
   m_y = y;
   m_white = white;
@@ -54,7 +54,7 @@ Piece::Piece( int x, int y, bool white )
 bool
 Piece::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Piece" << endl;
+  //cout << "mouvementValide Piece" << endl;
   return false;
 }
 
@@ -101,8 +101,8 @@ Piece::isBlack()
 void
 Piece::affiche()
 {
-  cout << "Piece: x=" << m_x << " y=" << m_y << " "
-       << ( m_white ? "blanche" : "noire" ) << endl;
+  //cout << "Piece: x=" << m_x << " y=" << m_y << " "
+  //     << ( m_white ? "blanche" : "noire" ) << endl;
 }
 
 char
@@ -118,13 +118,13 @@ Piece::codePiece()
 
 Roi::Roi(bool white) : Piece(5,(white?1:8),white)
 {
-  cout << "Constructeur Roi" << endl;
+  //cout << "Constructeur Roi" << endl;
 }
 
 bool
 Roi::roque()
 {
-  cout << "Roque Roi" << endl;
+  //cout << "Roque Roi" << endl;
   return false;
 }
 
@@ -140,7 +140,7 @@ Roi::mouvementValide(Echiquier &e, int x, int y)
 	}
 	else
     {
-        cout << "mouvementValide Roi" << endl;
+        //cout << "mouvementValide Roi" << endl;
     }
   return true;
 }
@@ -157,13 +157,13 @@ Roi::codePiece()
 
 Tour::Tour(bool white, bool left) : Piece((left?1:8),(white?1:8),white)
 {
-  cout << "Constructeur Tour" << endl;
+  //cout << "Constructeur Tour" << endl;
 }
 
 bool
 Tour::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Tour" << endl;
+  //cout << "mouvementValide Tour" << endl;
   return false;
 }
 
@@ -179,13 +179,13 @@ Tour::codePiece()
 
 Fou::Fou(bool white, bool left) : Piece((left?3:6),(white?1:8),white)
 {
-  cout << "Constructeur Fou" << endl;
+  //cout << "Constructeur Fou" << endl;
 }
 
 bool
 Fou::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Fou" << endl;
+  //cout << "mouvementValide Fou" << endl;
   return false;
 }
 
@@ -201,13 +201,13 @@ Fou::codePiece()
 
 Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(white,true)
 {
-  cout << "Constructeur Reine" << endl;
+  //cout << "Constructeur Reine" << endl;
 }
 
 bool
 Reine::mouvementValide(Echiquier &e, int x, int y)
 {
-  cout << "mouvementValide Reine" << endl;
+  //cout << "mouvementValide Reine" << endl;
   return Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y);
 }
 
@@ -223,7 +223,7 @@ Reine::codePiece()
 
 Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white)
 {
-  cout << "Constructeur Cavalier" << endl;
+  //cout << "Constructeur Cavalier" << endl;
 }
 
 bool
@@ -234,7 +234,7 @@ Cavalier::mouvementValide(Echiquier &e, int x, int y)
             return false;
     }
 
-    cout << "mouvementValide Cavalier" << endl;
+    //cout << "mouvementValide Cavalier" << endl;
     return false;
 }
 
