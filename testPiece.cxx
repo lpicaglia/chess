@@ -48,38 +48,8 @@ int main( int argc, char** argv )
 
   e.affiche();
 
-  /*
-  Roi rb(true);
-  rb.affiche();
-  Roi rn(false);
-  rn.affiche();
-  Reine qb(true);
-  qb.affiche();
-  Reine qn(false);
-  qn.affiche();
+  e.getPiece(1,1) -> mouvementValide(e,1, 5);
 
-  e.enleverPiece(5,1);
-  e.placer(&rb);
-  e.enleverPiece(5,8);
-  e.placer(&rn);
-  e.enleverPiece(4,1);
-  e.placer(&qb);
-  e.enleverPiece(4,8);
-  e.placer(&qn);
-
-  Piece* ptr;
-  ptr=&rb;
-  Roi* rptr;
-  rptr=dynamic_cast<Roi*>(ptr);
-  if (rptr==NULL)
-    cout << "cast impossible" << endl;
-  else
-    cout << "cast reussi" << endl;
-  */
-
-  // les objets definis dans cette fonction sont automatiquement détruits.
-  // Ex : p1
-
-  cout << "Joueur blanc = " << jb.getName() << "\n";
-  cout << "Joueur noir = " << jn.getName() << "\n";
+  cout << "Joueur blanc = " << jb.getName() << endl;
+  cout << "Joueur noir = " << jn.getName() << endl;
 }

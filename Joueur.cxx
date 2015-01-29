@@ -97,6 +97,7 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   m_pieces.push_back(cbl);
   m_pieces.push_back(cbr);
 
+
   for (int i=1; i<=8; i++){
 	  Piece* p = new Piece(i,2, true);
 	  m_pieces.push_back(p);
