@@ -98,10 +98,10 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   m_pieces.push_back(cbr);
 
 
-  for (int i=1; i<=8; i++){
+  /*for (int i=1; i<=8; i++){
 	  Piece* p = new Piece(i,2, true);
 	  m_pieces.push_back(p);
-  }
+  }*/
 }
 
 JoueurNoir::JoueurNoir(){
@@ -124,8 +124,8 @@ JoueurNoir::JoueurNoir(){
   m_pieces.push_back(cnl);
   m_pieces.push_back(cnr);
 
-  for (int i=1; i<=8; i++){
+  /*for (int i=1; i<=8; i++){
 	  Piece* p = new Piece(i,7, false);
 	  m_pieces.push_back(p);
-  }
+  }*/
 }

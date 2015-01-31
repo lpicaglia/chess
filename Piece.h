@@ -70,7 +70,7 @@ public:
   char codePiece();
 };
 
-class Cavalier : virtual public Piece{
+class Cavalier : public Tour, public Fou{
 
 public:
   Cavalier(bool white, bool left);

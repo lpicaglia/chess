@@ -66,13 +66,23 @@ Piece::mouvementValide(Echiquier &e, int x, int y)
 
             Piece* p = e.getPiece(x, y);
 
-            // Vérifie si la pièce présente sur la case est de la meme couleur
-            if(p -> m_white == m_white){
+            // Vérifie si les coordonnées de destination sont différentes des coordonnées d'origine
+            if(p->m_x == this -> m_x && p->m_y == this -> m_y){
 
-                cout << "DEBUD : PIECE de meme couleur aux coordonnées" << endl;
+                cout << "DEBUG : Coordonnées d'origine identiques aux coordonnées de destination" << endl;
                 return false;
             }
+            else{
+
+                // Vérifie si la pièce présente sur la case est de la meme couleur
+                if(p -> m_white == m_white){
+
+                    cout << "DEBUD : PIECE de meme couleur aux coordonnées de destination" << endl;
+                    return false;
+                }
+            }
         }
+        cout << "DEBUG : Mouvement valide Piece" << endl ;
         return true;
     }
     return false;
@@ -159,6 +169,7 @@ Roi::mouvementValide(Echiquier &e, int x, int y)
             return true;
         }
     }
+    cout << "DEBUG : Mouvement non valide ROI" << endl;
     return false;
 }
 
@@ -180,77 +191,70 @@ Tour::Tour(bool white, bool left) : Piece((left?1:8),(white?1:8),white)
 bool
 Tour::mouvementValide(Echiquier &e, int x, int y)
 {
-    if(Piece::mouvementValide(e, x, y)){
+    if(Piece::mouvementValide(e, x, y) && (x == m_x || y == m_y)){
 
-        // Vérifie si le mouvement est horizontale
-        if((x > m_x || x < m_x) && (y == m_y)){
+        // Déplacement horizontale vers la droite
+        if(x > m_x){
 
-            // Déplacement horizontale vers la droite
-            if(x > m_x){
+            cout << "DEBUG : Déplacement horizontale droite TOUR" << endl;
 
-                cout << "DEBUG : Déplacement horizontale droite TOUR" << endl;
+            // Vérifie si une piece gène le déplacement
+            for(int i = m_x+1 ; i < x; i++){
+                if(e.getPiece(i,y)){
 
-                // Vérifie si une piece gène le déplacement
-                for(int i = m_x+1 ; i < x; i++){
-                    if(e.getPiece(i,y)){
-
-                        cout << "DEBUG : Piece sur le trajet TOUR" << endl;
-                        return false;
-                    }
-                }
-            }
-
-            // Déplacement horizontale vers la gauche
-            if(x < m_x){
-
-                cout << "DEBUG : Déplacement horizontale gauche TOUR" << endl;
-
-                // Vérifie si une piece gène le déplacement
-                for(int i = m_x-1 ; i > x; i--){
-                    if(e.getPiece(i,y)){
-
-                        cout << "DEBUG : Piece sur le trajet TOUR" << endl;
-                        return false;
-                    }
+                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
+                    return false;
                 }
             }
             return true;
         }
-        else{
-            // Vérifie si le mouvement est verticale
-            if((y > m_y ||y < m_y) && (x == m_x)){
 
-                // Déplacement verticale vers le bas
-                if(y > m_y){
+        // Déplacement horizontale vers la gauche
+        if(x < m_x){
 
-                    cout << "DEBUG : Déplacement verticale bas TOUR" << endl;
+            cout << "DEBUG : Déplacement horizontale gauche TOUR" << endl;
 
-                    // Vérifie si une piece gène le déplacement
-                    for(int i = m_y+1 ; i < y; i++){
-                        if(e.getPiece(x,i)){
+            // Vérifie si une piece gène le déplacement
+            for(int i = m_x-1 ; i > x; i--){
+                if(e.getPiece(i,y)){
 
-                            cout << "DEBUG : Piece sur le trajet TOUR" << endl;
-                            return false;
-                        }
-                    }
+                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
+                    return false;
                 }
-
-                // Déplacement verticale vers le haut
-                if(y < m_y){
-
-                    cout << "DEBUG : Déplacement verticale haut TOUR" << endl;
-
-                    // Vérifie si une piece gène le déplacement
-                    for(int i = m_y-1 ; i > y; i--){
-                        if(e.getPiece(x,i)){
-
-                            cout << "DEBUG : Piece sur le trajet TOUR" << endl;
-                            return false;
-                        }
-                    }
-                }
-                return true;
             }
+            return true;
+        }
+
+        // Déplacement verticale vers le bas
+        if(y > m_y){
+
+            cout << "DEBUG : Déplacement verticale bas TOUR" << endl;
+
+            // Vérifie si une piece gène le déplacement
+            for(int i = m_y+1 ; i < y; i++){
+                if(e.getPiece(x,i)){
+
+                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // Déplacement verticale vers le haut
+        if(y < m_y){
+
+            cout << "DEBUG : Déplacement verticale haut TOUR" << endl;
+
+            // Vérifie si une piece gène le déplacement
+            for(int i = m_y-1 ; i > y; i--){
+                if(e.getPiece(x,i)){
+
+                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
+                    return false;
+                }
+            }
+            return true;
         }
     }
     return false;
@@ -276,14 +280,16 @@ Fou::mouvementValide(Echiquier &e, int x, int y)
 {
     if(Piece::mouvementValide(e, x, y)){
 
+        // Vérifie si les valeurs absolues des coordonnées sont identique
         if(abs(x-m_x) == abs(y-m_y)){
+
             cout << "DEBUG : Mouvement diagonal FOU" << endl;
             int axeY=min(y,m_y)+1;
 
-            // Vérifie si une piece gène le déplacement
+
             for(int i=min(x,m_x)+1 ; i<max(x,m_x); i++){
 
-
+                // Vérifie si une piece gène le déplacement
                 if(e.getPiece(i,axeY)){
                     cout << "DEBUG : Piece sur le trajet du FOU" << endl;
                     return false;
@@ -316,8 +322,14 @@ Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(whi
 bool
 Reine::mouvementValide(Echiquier &e, int x, int y)
 {
-  //cout << "mouvementValide Reine" << endl;
-  return Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y);
+
+    if((Piece::mouvementValide(e, x, y)) && (Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y))){
+        cout << "DEBUG : Mouvement valide REINE" << endl;
+        return true;
+    }
+
+    cout << "DEBUG : Mouvement non valide REINE" << endl;
+    return false;
 }
 
 char
@@ -330,7 +342,7 @@ Reine::codePiece()
 //                                 Classe Cavalier
 //---------------------------------------------------------------------------
 
-Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white)
+Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white), Fou(white,true), Tour(white,true)
 {
   //cout << "Constructeur Cavalier" << endl;
 }
@@ -339,7 +351,15 @@ bool
 Cavalier::mouvementValide(Echiquier &e, int x, int y)
 {
 
-    //cout << "mouvementValide Cavalier" << endl;
+    if(Piece::mouvementValide(e, x, y) && !Fou::mouvementValide(e,x,y) && !Tour::mouvementValide(e,x,y)){
+
+        if((x == m_x-2 || x == m_x+2 || y == m_y-2 || y == m_y+2)){
+            cout << "DEBUG : Mouvement valide CAVALIER" << endl;
+            return true;
+        }
+    }
+
+    cout << "DEBUG : Mouvement non valide CAVALIER" << endl;
     return false;
 }
 

@@ -48,7 +48,30 @@ int main( int argc, char** argv )
 
   e.affiche();
 
-  e.getPiece(1,1) -> mouvementValide(e,1, 5);
+  Piece * p = e.getPiece(2,1);
+
+  // Test du déplacement d'une pièce
+  if(p != NULL && p -> mouvementValide(e,3,3)){
+    cout << "DEBUG : Premier déplacement" << endl;
+    e.deplacer(p, 3, 3);
+  }
+  else{
+    cout << "DEBUG : Déplacement impossible !!!" << endl;
+  }
+
+  e.affiche();
+
+  p = e.getPiece(3, 3);
+  // Test du déplacement d'une pièce
+  if(p != NULL && p -> mouvementValide(e,4,6)){
+    cout << "DEBUG : Second déplacement" << endl;
+    e.deplacer(p, 4, 6);
+  }
+  else{
+    cout << "DEBUG : Déplacement impossible !!!" << endl;
+  }
+
+  e.affiche();
 
   cout << "Joueur blanc = " << jb.getName() << endl;
   cout << "Joueur noir = " << jn.getName() << endl;
