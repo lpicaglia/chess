@@ -21,16 +21,7 @@ Joueur::~Joueur()
 
 Joueur::Joueur(bool white)
 {
-  /*
-  int n = 0;
-  int y = white ? 1 : 8;
-  for ( int x = 1; x <= 8; ++x )
-    m_pieces[ n++ ].init( x, y, white );
-  y = white ? 2 : 7;
-  for ( int x = 1; x <= 8; ++x )
-    m_pieces[ n++ ].init( x, y, white );
-  cout << "Constructeur Joueur specialise" << endl;
-  */
+
 }
 
 void
@@ -52,28 +43,12 @@ Joueur::isWhite()
 void
 Joueur::placerPieces(Echiquier &e)
 {
-  /*
-  for (int i=0; i<16; i++)
-    e.placer(&(m_pieces[i]));
-  */
   vector<Piece*>::iterator p = m_pieces.begin();
   while ( p != m_pieces.end() )
     {
       e.placer(*p);
       p++;
     }
-}
-
-void
-Joueur::setName(string name)
-{
-  joueurName = name;
-}
-
-string
-Joueur::getName()
-{
-  return joueurName;
 }
 
 JoueurBlanc::JoueurBlanc() //: Joueur(true)
@@ -98,10 +73,10 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   m_pieces.push_back(cbr);
 
 
-  /*for (int i=1; i<=8; i++){
-	  Piece* p = new Piece(i,2, true);
+  for (int i=1; i<=8; i++){
+	  Piece* p = new Pion(i,2, true);
 	  m_pieces.push_back(p);
-  }*/
+  }
 }
 
 JoueurNoir::JoueurNoir(){
@@ -124,8 +99,8 @@ JoueurNoir::JoueurNoir(){
   m_pieces.push_back(cnl);
   m_pieces.push_back(cnr);
 
-  /*for (int i=1; i<=8; i++){
-	  Piece* p = new Piece(i,7, false);
+  for (int i=1; i<=8; i++){
+	  Piece* p = new Pion(i,7, false);
 	  m_pieces.push_back(p);
-  }*/
+  }
 }

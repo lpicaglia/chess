@@ -9,16 +9,20 @@
 #include "Piece.h"
 #include "Joueur.h"
 #include "Echiquier.h"
-
+#include "string.h"
 
 // Pour utiliser les flux de iostream sans mettre "std::" tout le temps.
 using namespace std;
 
-bool compare(Piece pa, Piece pb)
-{
-  if ( (pa.x()==pb.x()) && (pa.y()==pb.y()) )
-    return true;
-  return false;
+// Vérifie la validité des coordonnées saisie
+bool coordonneeValide(string coord){
+    if(coord.length() == 2){
+        coord[0] = toupper(coord[0]);
+        if(coord[0] >= 'A' && coord[0] <= 'H' && coord[1] >= '1' && coord[1] <= '8'){
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -26,18 +30,11 @@ bool compare(Piece pa, Piece pb)
  */
 int main( int argc, char** argv )
 {
-  string jbName, jnName;
+  string origine, destination;
+  int origXInt, origYInt, destXInt, destYInt;
 
   JoueurBlanc jb;
   JoueurNoir jn;
-
-  cout << "Veuillez saisir le nom du joueur blanc : ";
-  cin >> jbName;
-  jb.setName(jbName);
-
-  cout << "Veuillez saisir le nom du joueur noir : ";
-  cin >> jnName;
-  jn.setName(jnName);
 
   jb.affiche();
   jn.affiche();
@@ -48,31 +45,49 @@ int main( int argc, char** argv )
 
   e.affiche();
 
-  Piece * p = e.getPiece(2,1);
+  for(int i=1; i<=2; i++){
 
-  // Test du déplacement d'une pièce
-  if(p != NULL && p -> mouvementValide(e,3,3)){
-    cout << "DEBUG : Premier déplacement" << endl;
-    e.deplacer(p, 3, 3);
-  }
-  else{
-    cout << "DEBUG : Déplacement impossible !!!" << endl;
-  }
+      // Saisie des coordonnées de la pièce a déplacer
+      while(!coordonneeValide(origine)){
+        cout << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
+        cin >> origine;
+        if(!coordonneeValide(origine)){
+            cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;
+        }
+        else{
+            origXInt = toupper(origine[0])-64;
+            origYInt = origine[1]-48;
+        }
+      }
 
-  e.affiche();
+      origine = "";
 
-  p = e.getPiece(3, 3);
-  // Test du déplacement d'une pièce
-  if(p != NULL && p -> mouvementValide(e,4,6)){
-    cout << "DEBUG : Second déplacement" << endl;
-    e.deplacer(p, 4, 6);
-  }
-  else{
-    cout << "DEBUG : Déplacement impossible !!!" << endl;
-  }
+      // Saisie des coordonnées de la case de destination de la pièce
+      while(!coordonneeValide(destination)){
+        cout << "Veuillez saisir les coordonnées de la case de destination de la pièce :" << endl;
+        cin >> destination;
+        if(!coordonneeValide(destination)){
+            cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;
+        }
+        else{
+            destXInt = toupper(destination[0])-64;
+            destYInt = destination[1]-48;
+        }
+      }
 
-  e.affiche();
+      destination = "";
 
-  cout << "Joueur blanc = " << jb.getName() << endl;
-  cout << "Joueur noir = " << jn.getName() << endl;
+      Piece * p = e.getPiece(origXInt, origYInt);
+
+      // Test du déplacement d'une pièce
+      if(p != NULL && p -> mouvementValide(e,destXInt, destYInt)){
+        cout << "DEBUG : Premier déplacement" << endl;
+        e.deplacer(p, destXInt, destYInt);
+      }
+      else{
+        cout << "DEBUG : Déplacement impossible !!!" << endl;
+      }
+
+      e.affiche();
+    }
 }

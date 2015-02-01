@@ -37,7 +37,7 @@ public:
   virtual char codePiece();
 };
 
-class Roi : public Piece{
+class Roi : virtual public Piece{
 
 public:
   Roi(bool white);
@@ -76,6 +76,16 @@ public:
   Cavalier(bool white, bool left);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
+};
+
+class Pion : virtual public Piece{
+
+private:
+  bool premierDeplacement;
+
+public:
+  Pion(int x, int y, bool white);
+  bool mouvementValide(Echiquier &e, int x, int y);
 };
 
 

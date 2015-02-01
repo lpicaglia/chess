@@ -17,16 +17,13 @@ class Joueur{
 
  protected:
   vector<Piece*> m_pieces;
-  string joueurName;
- public:
+   public:
   Joueur();
   Joueur(bool white);
   ~Joueur();
   void affiche();
   bool isWhite();
   void placerPieces(Echiquier &e);
-  void setName(string name);
-  string getName();
 };
 
 class JoueurBlanc : public Joueur{
