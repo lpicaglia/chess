@@ -417,9 +417,21 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
     // En passant pion blanc
     if(m_white && m_y == 5 ){
-        if(e.getPiece((m_x-1), m_y)-> codePiece() == 'p' ){
-            if(x == (m_x-1) && y == (m_y+1)){
+
+        if(Piece* p = e.getPiece((m_x-1), m_y)){
+            if(p -> codePiece() == 'p' && x == (m_x-1) && y == (m_y+1)){
+
                 cout << "DEBUG : Attaque en passant PION BLANC." << endl;
+                e.enleverPiece((m_x-1), m_y);
+                return true;
+            }
+        }
+
+        if(Piece* p = e.getPiece((m_x+1), m_y)){
+            if(p -> codePiece() == 'p' && x == (m_x+1) && y == (m_y+1)){
+
+                cout << "DEBUG : Attaque en passant PION BLANC." << endl;
+                e.enleverPiece((m_x+1), m_y);
                 return true;
             }
         }
@@ -427,9 +439,21 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
     // En passant pion noir
     if(!m_white && m_y == 4 ){
-        if(e.getPiece((m_x-1), m_y)-> codePiece() == 'P' ){
-            if(x == (m_x-1) && y == (m_y-1)){
+
+        if(Piece* p = e.getPiece((m_x-1), m_y)){
+            if(p-> codePiece() == 'P' && x == (m_x-1) && y == (m_y-1)){
+
                 cout << "DEBUG : Attaque en passant PION BLANC." << endl;
+                e.enleverPiece((m_x+1), m_y);
+                return true;
+            }
+        }
+
+        if(Piece* p = e.getPiece((m_x+1), m_y)){
+            if(p -> codePiece() == 'P' && x == (m_x+1) && y == (m_y-1)){
+
+                cout << "DEBUG : Attaque en passant PION BLANC." << endl;
+                e.enleverPiece((m_x+1), m_y);
                 return true;
             }
         }

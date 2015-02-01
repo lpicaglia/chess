@@ -45,7 +45,7 @@ int main( int argc, char** argv )
 
   e.affiche();
 
-  for(int i=1; i<=2; i++){
+  for(int i=1; i<=4; i++){
 
       // Saisie des coordonnées de la pièce a déplacer
       while(!coordonneeValide(origine)){
