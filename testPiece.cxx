@@ -43,13 +43,22 @@ int main( int argc, char** argv )
   jb.placerPieces(e);
   jn.placerPieces(e);
 
+  cout << "*============================================================*" << endl;
+  cout << "|                  ________  __________________              |" << endl;
+  cout << "|                 / ____/ / / / ____/ ___/ ___/              |" << endl;
+  cout << "|                / /   / /_/ / __/  \\__ \\\\__ \\               |" << endl; 
+  cout << "|               / /___/ __  / /___ ___/ /__/ /               |" << endl;
+  cout << "|               \\____/_/ /_/_____//____/____/                |" << endl;
+  cout << "|                                                            |" << endl;
+  cout << "*============================================================*" << endl;                            
+
   e.affiche();
 
   for(int i=1; i<=4; i++){
 
       // Saisie des coordonnées de la pièce a déplacer
       while(!coordonneeValide(origine)){
-        cout << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
+        cout << endl << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
         cin >> origine;
         if(!coordonneeValide(origine)){
             cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;

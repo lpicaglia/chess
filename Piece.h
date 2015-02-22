@@ -7,6 +7,8 @@
 #if !defined Piece_h
 #define Piece_h
 
+using namespace std;
+
 //#include "Echiquier.h"
 class Echiquier;
 
