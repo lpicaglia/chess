@@ -51,6 +51,24 @@ Joueur::placerPieces(Echiquier &e)
     }
 }
 
+vector<Piece*>
+Joueur::getPieces()
+{
+  return m_pieces;
+}
+
+bool
+Joueur::isMat()
+{
+  return false;
+}
+
+bool
+Joueur::isEchec()
+{
+  return false;
+}
+
 JoueurBlanc::JoueurBlanc() //: Joueur(true)
 {
   //cout << "Constructeur Joueur Blanc" << endl;

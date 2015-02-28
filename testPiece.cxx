@@ -32,6 +32,8 @@ int main( int argc, char** argv )
 {
   string origine, destination;
   int origXInt, origYInt, destXInt, destYInt;
+  int nbTour = 1;
+  bool tourBlanc = true;
 
   JoueurBlanc jb;
   JoueurNoir jn;
@@ -54,11 +56,18 @@ int main( int argc, char** argv )
 
   e.affiche();
 
-  for(int i=1; i<=4; i++){
+  while(!jb.isMat() && !jn.isMat()){      
+
+      if(tourBlanc){
+        cout << endl << "===================== TOUR " << nbTour << " DU JOUEUR BLANC =====================" << endl << endl;
+      }
+      else{
+        cout << endl << "===================== TOUR " << nbTour << " DU JOUEUR NOIR =====================" << endl << endl;
+      }
 
       // Saisie des coordonnées de la pièce a déplacer
       while(!coordonneeValide(origine)){
-        cout << endl << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
+        cout << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
         cin >> origine;
         if(!coordonneeValide(origine)){
             cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;
@@ -68,8 +77,6 @@ int main( int argc, char** argv )
             origYInt = origine[1]-48;
         }
       }
-
-      origine = "";
 
       // Saisie des coordonnées de la case de destination de la pièce
       while(!coordonneeValide(destination)){
@@ -84,8 +91,6 @@ int main( int argc, char** argv )
         }
       }
 
-      destination = "";
-
       Piece * p = e.getPiece(origXInt, origYInt);
 
       // Test du déplacement d'une pièce
@@ -98,5 +103,42 @@ int main( int argc, char** argv )
       }
 
       e.affiche();
+
+      //Victoire joueur blanc
+      if(jn.isMat()){
+
+        cout << "     ______  __  ________  _____    ___  __   ___   _  _______  _      _______  __" << endl;
+        cout << " __ / / __ \\/ / / / __/ / / / _ \\  / _ )/ /  / _ | / |/ / ___/ | | /| / /  _/ |/ /" << endl;
+        cout << "/ // / /_/ / /_/ / _// /_/ / , _/ / _  / /__/ __ |/    / /__   | |/ |/ // //    / " << endl;
+        cout << "\\___/\\____/\\____/___/\\____/_/|_| /____/____/_/ |_/_/|_/\\___/   |__/|__/___/_/|_/  " << endl;
+
+      }
+
+      //Victoire joueur noir
+      if(jb.isMat()){
+
+        cout << "     ______  __  ________  _____    _  ______  _______    _      _______  __" << endl;
+        cout << " __ / / __ \\/ / / / __/ / / / _ \\  / |/ / __ \\/  _/ _ \\  | | /| / /  _/ |/ /" << endl;
+        cout << "/ // / /_/ / /_/ / _// /_/ / , _/ /    / /_/ // // , _/  | |/ |/ // //    / " << endl;
+        cout << "\\___/\\____/\\____/___/\\____/_/|_| /_/|_/\\____/___/_/|_|   |__/|__/___/_/|_/  " << endl;
+
+      }
+
+      //Changement de joueur
+      if(tourBlanc){
+        tourBlanc = false;
+      }
+      else{
+        nbTour++;
+        tourBlanc = true;
+      }
+
+      origine = "";
+      destination = "";
     }
+    
+    cout << "  ________   __  _______  ____ _   _________ " << endl;
+    cout << " / ___/ _ | /  |/  / __/ / __ \\ | / / __/ _ \\" << endl;
+    cout << "/ (_ / __ |/ /|_/ / _/  / /_/ / |/ / _// , _/" << endl;
+    cout << "\\___/_/ |_/_/  /_/___/  \\____/|___/___/_/|_| " << endl;
 }

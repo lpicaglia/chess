@@ -21,7 +21,7 @@ protected:
   int m_x;
   int m_y;
   bool m_white;
-
+  
 public:
   Piece();
   virtual ~Piece();
