@@ -25,8 +25,6 @@ class Joueur{
   bool isWhite();
   void placerPieces(Echiquier &e);
   vector<Piece*> getPieces();
-  bool isMat();
-  bool isEchec();
 };
 
 class JoueurBlanc : public Joueur{

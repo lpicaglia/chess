@@ -88,6 +88,7 @@ private:
 public:
   Pion(int x, int y, bool white);
   bool mouvementValide(Echiquier &e, int x, int y);
+  char codePiece();
 };
 
 

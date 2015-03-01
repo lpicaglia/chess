@@ -134,7 +134,7 @@ Piece::affiche()
 char
 Piece::codePiece()
 {
-  return (m_white)?'P': 'p';
+  return (m_white)?'B': 'n';
 }
 
 //---------------------------------------------------------------------------
@@ -314,7 +314,7 @@ Reine::codePiece()
 //                                 Classe Cavalier
 //---------------------------------------------------------------------------
 
-Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?3:8),white), Fou(white,true), Tour(white,true)
+Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white), Fou(white,true), Tour(white,true)
 {
   //cout << "Constructeur Cavalier" << endl;
 }
@@ -325,7 +325,7 @@ Cavalier::mouvementValide(Echiquier &e, int x, int y)
 
     if(!Fou::mouvementValide(e,x,y) && !Tour::mouvementValide(e,x,y)){
 
-        if((abs(x - m_x) == 2 && abs(y - m_y) != 2) || (abs(x - m_x) != 2 && abs(y - m_y) == 2)){
+        if((abs(x - m_x) == 2 && abs(y - m_y) == 1) || (abs(x - m_x) == 1 && abs(y - m_y) == 2)){
             cout << "DEBUG : Mouvement valide CAVALIER" << endl;
             return true;
         }
@@ -466,4 +466,10 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
     cout << "DEBUG : Mouvement non valide PION" << endl;
     return false;
+}
+
+char
+Pion::codePiece()
+{
+  return (m_white)?'P':'p';
 }

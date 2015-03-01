@@ -5,7 +5,10 @@ using namespace std;
 
 Joueur::Joueur()
 {
-  //cout << "Constructeur Joueur defaut" << endl;
+}
+
+Joueur::Joueur(bool white)
+{
 }
 
 Joueur::~Joueur()
@@ -16,12 +19,6 @@ Joueur::~Joueur()
       delete *p;
       p++;
     }
-  //cout << "Destructeur Joueur" << endl;
-}
-
-Joueur::Joueur(bool white)
-{
-
 }
 
 void
@@ -57,21 +54,8 @@ Joueur::getPieces()
   return m_pieces;
 }
 
-bool
-Joueur::isMat()
-{
-  return false;
-}
-
-bool
-Joueur::isEchec()
-{
-  return false;
-}
-
 JoueurBlanc::JoueurBlanc() //: Joueur(true)
 {
-  //cout << "Constructeur Joueur Blanc" << endl;
   Roi* rb = new Roi(true);
   Reine* qb = new Reine(true);
   Fou* fbl = new Fou(true, true);
@@ -90,15 +74,15 @@ JoueurBlanc::JoueurBlanc() //: Joueur(true)
   m_pieces.push_back(cbl);
   m_pieces.push_back(cbr);
 
-
-  /*for (int i=1; i<=8; i++){
-	  Piece* p = new Pion(i,2, true);
-	  m_pieces.push_back(p);
-  }*/
+  for (int i=1; i<=8; i++){
+    Pion* p = new Pion(i,2, true);
+    m_pieces.push_back(p);
+  }
 }
 
-JoueurNoir::JoueurNoir(){
-  //cout << "Constructeur Joueur Noir" << endl;
+JoueurNoir::JoueurNoir()
+{
+
   Roi* rn = new Roi(false);
   Reine* qn = new Reine(false);
   Fou* fnl = new Fou(false, true);
@@ -117,8 +101,8 @@ JoueurNoir::JoueurNoir(){
   m_pieces.push_back(cnl);
   m_pieces.push_back(cnr);
 
-  /*for (int i=1; i<=8; i++){
-	  Piece* p = new Pion(i,7, false);
-	  m_pieces.push_back(p);
-  }*/
+  for (int i=1; i<=8; i++){
+    Pion* p = new Pion(i,7, false);
+    m_pieces.push_back(p);
+  }
 }
