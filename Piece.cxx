@@ -255,9 +255,16 @@ Fou::mouvementValide(Echiquier &e, int x, int y)
         // Vérifie si les valeurs absolues des coordonnées sont identique
         if(abs(x-m_x) == abs(y-m_y)){
 
-            cout << "DEBUG : Mouvement diagonal FOU" << endl;
-            int axeY=min(y,m_y)+1;
+            int axeY;
 
+            if((x > m_x && y < m_y) || (x < m_x && y > m_y)){
+                axeY = max(y,m_y)-1;
+            }
+            else{
+                axeY = min(y,m_y)+1;
+            }
+
+            cout << "DEBUG : Mouvement diagonal FOU" << endl;
 
             for(int i=min(x,m_x)+1 ; i<max(x,m_x); i++){
 
@@ -266,7 +273,13 @@ Fou::mouvementValide(Echiquier &e, int x, int y)
                     cout << "DEBUG : Piece sur le trajet du FOU" << endl;
                     return false;
                 }
-                axeY++;
+
+                if((x > m_x && y < m_y) || (x < m_x && y > m_y)){
+                    axeY--;
+                }
+                else{
+                    axeY++;
+                }
             }
             cout << "DEBUG : Mouvement valide FOU" << endl;
             return true;
