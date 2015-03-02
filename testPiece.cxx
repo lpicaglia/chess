@@ -6,6 +6,7 @@
 
 // Utile pour l'affichage
 #include <iostream>
+#include <cstdlib>
 #include "Piece.h"
 #include "Joueur.h"
 #include "Echiquier.h"
@@ -13,30 +14,6 @@
 
 // Pour utiliser les flux de iostream sans mettre "std::" tout le temps.
 using namespace std;
-
-/*bool isJoueurEnEchec(Joueur* joueurToCheck,Joueur* attaquant, Echiquier* e){
-  cout<<"DEBUG:debut isJoueurEnEchec"<<endl;
-  bool ret = false;
-  vector<Piece*> findTheKing = joueurToCheck->getPieces();
-  Piece* roi=NULL;
-  for(vector<Piece*>::size_type i=0;i<findTheKing.size();i++){
-    if(findTheKing[i]->codePiece()==(joueurToCheck->isWhite()?'R':'r')){
-      roi = findTheKing[i];
-      cout<<"DEBUG:roi trouvé"<<endl<< roi->x() << endl << roi->y() << endl;
-    }
-  }
-  if (roi==NULL){
-    return false;
-  }
-  for(vector<Piece*>::size_type i=0;i<attaquant->getPieces().size();i++){
-    if(attaquant->getPieces()[i]->mouvementValide(e, roi->x(), roi->y())){
-      cout<<"DEBUG:joueur en echec"<<endl;
-      ret = true;
-    }
-  }
-  cout<<"DEBUG:fin isJoueurEchec"<<endl;
-  return ret;
-}*/
 
 // Vérifie si un joueur est en échec
 bool isEchec(Joueur &defenseur, Joueur &attaquant, Echiquier &e)
@@ -52,9 +29,8 @@ bool isEchec(Joueur &defenseur, Joueur &attaquant, Echiquier &e)
   // Parcour des pièces du defenseur pour retrouver son roi
   while (i < p_defenseur.size()){
 
-    // Vérifie si on trouve le roi blanc
+    // Vérifie si on trouve le roi
     if(p_defenseur[i]->codePiece() == codeATrouver){
-      cout << "DEBUG : Roi trouvé" << endl;
       roi = p_defenseur[i];
     }
     i++;
@@ -64,22 +40,66 @@ bool isEchec(Joueur &defenseur, Joueur &attaquant, Echiquier &e)
   // Parcour des pièces de l'attaquant
   while (i < p_attaquant.size()){
     if(p_attaquant[i]->mouvementValide(e, roi->x(), roi->y())){
-      cout << "DEBUG : Mise en echec " << p_attaquant[i]->codePiece() << " -> "<< roi->codePiece() << endl;
-      cout << " roi => X : " << roi->x() << " ; Y : " << roi->y() << endl;
-      cout << " attaquant => X : " << p_attaquant[i]->x() << " ; Y : " << p_attaquant[i]->y() << endl;
       return true;
     }
     i++;
   }
-
-  cout << "DEBUG : Pas d'échec" << endl;
   return false;
 }
 
 // Vérifie si un joueur est mat
-bool isMat(Joueur* joueur, Echiquier* e)
+bool isMat(Joueur &defenseur, Joueur &attaquant, Echiquier &e)
 {
-  return false;
+  Piece* roi = NULL;
+  char codeATrouver = (defenseur.isWhite()?'R':'r');
+
+  // Récupération des pointeurs des pièces des deux joueur
+  vector<Piece *> p_defenseur = defenseur.getPieces();
+  vector<Piece *> p_attaquant = attaquant.getPieces();
+
+  
+  // Parcour des pièces du defenseur pour retrouver son roi
+  int i = 0;
+  while (i < p_defenseur.size()){
+
+    // Vérifie si on trouve le roi
+    if(p_defenseur[i]->codePiece() == codeATrouver){
+      roi = p_defenseur[i];
+    }
+    i++;
+  }
+
+  // On recupère les cases que le roi controle
+  vector<int*> roiCtrl;
+  bool case_libre = false;
+
+  // Tant qu'il n'y a pas de case de libre
+  while(!case_libre){
+    roiCtrl = roi->ctrlCases(e);
+    
+    // Parcour des cases libre sur lesquelles le roi peut se rendre
+    int j = 0;
+    while(j < roiCtrl.size()){
+      /*cout << "DEBUG : Roi controle x : " << roiCtrl[j][0] << " y : " << roiCtrl[j][1] << endl;*/
+      
+      // Parcour des pièces de l'attaquant
+      int k = 0;
+      while(k < p_attaquant.size() && !case_libre){
+
+        case_libre = true;
+        // Vérifie si la pièce de l'attaquant peut attaquer la case
+        if(p_attaquant[k]->mouvementValide(e, roiCtrl[j][0], roiCtrl[j][1])){
+          /*cout << "DEBUG : Casse x : " << roiCtrl[j][0] << " y : " << roiCtrl[j][1] << " attaqué !" << endl;*/
+          
+          case_libre = false;
+        }
+        k++;
+      }
+      j++;
+    }
+  }
+
+  return (case_libre)?false:true;
 }
 
 // Vérifie la validité des coordonnées saisie
@@ -115,24 +135,35 @@ int main( int argc, char** argv )
   jb.placerPieces(e);
   jn.placerPieces(e);
 
-  cout << "*============================================================*" << endl;
-  cout << "|                  ________  __________________              |" << endl;
-  cout << "|                 / ____/ / / / ____/ ___/ ___/              |" << endl;
-  cout << "|                / /   / /_/ / __/  \\__ \\\\__ \\               |" << endl; 
-  cout << "|               / /___/ __  / /___ ___/ /__/ /               |" << endl;
-  cout << "|               \\____/_/ /_/_____//____/____/                |" << endl;
-  cout << "|                                                            |" << endl;
-  cout << "*============================================================*" << endl;                            
-
-  e.affiche();
+  system("clear");
 
   while(!finPartie){      
+
+      cout << "*============================================================*" << endl;
+      cout << "|                  ________  __________________              |" << endl;
+      cout << "|                 / ____/ / / / ____/ ___/ ___/              |" << endl;
+      cout << "|                / /   / /_/ / __/  \\__ \\\\__ \\               |" << endl; 
+      cout << "|               / /___/ __  / /___ ___/ /__/ /               |" << endl;
+      cout << "|               \\____/_/ /_/_____//____/____/                |" << endl;
+      cout << "|                                                            |" << endl;
+      cout << "*============================================================*" << endl;   
+
+      e.affiche();
+
+      // Vérifie la mise en echec
+      if(!finPartie && (isEchec(jn, jb, e) || isEchec(jb, jn, e))){
+
+        cout << "      ___________ ___________" << endl;
+        cout << "     / __/ ___/ // / __/ ___/" << endl;
+        cout << "    / _// /__/ _  / _// /__  " << endl;
+        cout << "   /___/\\___/_//_/___/\\___/  " << endl;
+      }
 
       if(tourBlanc){
         cout << endl << "===================== TOUR " << nbTour << " DU JOUEUR BLANC =====================" << endl << endl;
       }
       else{
-        cout << endl << "===================== TOUR " << nbTour << " DU JOUEUR NOIR =====================" << endl << endl;
+        cout << endl << "===================== TOUR " << nbTour << " DU JOUEUR NOIR  =====================" << endl << endl;
       }
 
       // Saisie des coordonnées de la pièce a déplacer
@@ -140,7 +171,7 @@ int main( int argc, char** argv )
         cout << "Veuillez saisir les coordonnées de la pièce que vous souhaitez déplacer :" << endl;
         cin >> origine;
         if(!coordonneeValide(origine)){
-            cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;
+            cout << endl << "/!\\ Coordonnées non valide ! Veuillez recommencer (ex. : A1). /!\\" << endl << endl;
         }
         else{
             origXInt = toupper(origine[0])-64;
@@ -148,76 +179,88 @@ int main( int argc, char** argv )
         }
       }
 
-      // Saisie des coordonnées de la case de destination de la pièce
-      while(!coordonneeValide(destination)){
-        cout << "Veuillez saisir les coordonnées de la case de destination de la pièce :" << endl;
-        cin >> destination;
-        if(!coordonneeValide(destination)){
-            cout << "Coordonnées non valide ! Veuillez recommencer (ex. : A1)." << endl;
-        }
-        else{
-            destXInt = toupper(destination[0])-64;
-            destYInt = destination[1]-48;
-        }
-      }
-
       Piece * p = e.getPiece(origXInt, origYInt);
 
-      // Test du déplacement d'une pièce
-      if(p != NULL && p -> mouvementValide(e,destXInt, destYInt)){
-        e.deplacer(p, destXInt, destYInt);
+      if(p != NULL){
+        if((tourBlanc && p->isWhite()) || (!tourBlanc && p->isBlack())){ 
 
-        // Echec joueur noir
-        if(isEchec(jn, jb, e) || isEchec(jb, jn, e)){
+          // Saisie des coordonnées de la case de destination de la pièce
+          while(!coordonneeValide(destination)){
+            cout << "Veuillez saisir les coordonnées de la case de destination de la pièce :" << endl;
+            cin >> destination;
+            if(!coordonneeValide(destination)){
+                cout << endl << "/!\\ Coordonnées non valide ! Veuillez recommencer (ex. : A1). /!\\" << endl << endl;
+            }
+            else{
+                destXInt = toupper(destination[0])-64;
+                destYInt = destination[1]-48;
+            }
+          }
 
-            cout << "      ___________ ___________" << endl;
-            cout << "     / __/ ___/ // / __/ ___/" << endl;
-            cout << "    / _// /__/ _  / _// /__  " << endl;
-            cout << "   /___/\\___/_//_/___/\\___/  " << endl;
+          // Test du déplacement d'une pièce
+          if(p -> mouvementValide(e,destXInt, destYInt)){
+            system("clear");
+            e.deplacer(p, destXInt, destYInt);
+
+            //Victoire joueur blanc
+            if(isMat(jn, jb, e)){
+
+              cout << "            ___________ ___________       __     __  ______ ______  ______" << endl;
+              cout << "           / __/ ___/ // / __/ ___/  ___ / /_   /  |/  / _ /_  __/ / / / /" << endl;
+              cout << "          / _// /__/ _  / _// /__   / -_) __/  / /|_/ / __ |/ /   /_/_/_/ " << endl;
+              cout << "         /___/\\___/_//_/___/\\___/   \\__/\\__/  /_/  /_/_/ |_/_/   (_|_|_)  " << endl;
+              cout << "     ______  __  ________  _____    ___  __   ___   _  _______  _      _______  __" << endl;
+              cout << " __ / / __ \\/ / / / __/ / / / _ \\  / _ )/ /  / _ | / |/ / ___/ | | /| / /  _/ |/ /" << endl;
+              cout << "/ // / /_/ / /_/ / _// /_/ / , _/ / _  / /__/ __ |/    / /__   | |/ |/ // //    / " << endl;
+              cout << "\\___/\\____/\\____/___/\\____/_/|_| /____/____/_/ |_/_/|_/\\___/   |__/|__/___/_/|_/  " << endl;
+
+              finPartie = true;
+            }
+
+            //Victoire joueur noir
+            if(isMat(jb, jn, e)){
+
+              cout << "          ___________ ___________       __     __  ______ ______  ______" << endl;
+              cout << "         / __/ ___/ // / __/ ___/  ___ / /_   /  |/  / _ /_  __/ / / / /" << endl;
+              cout << "        / _// /__/ _  / _// /__   / -_) __/  / /|_/ / __ |/ /   /_/_/_/ " << endl;
+              cout << "       /___/\\___/_//_/___/\\___/   \\__/\\__/  /_/  /_/_/ |_/_/   (_|_|_)  " << endl;
+              cout << "     ______  __  ________  _____    _  ______  _______    _      _______  __" << endl;
+              cout << " __ / / __ \\/ / / / __/ / / / _ \\  / |/ / __ \\/  _/ _ \\  | | /| / /  _/ |/ /" << endl;
+              cout << "/ // / /_/ / /_/ / _// /_/ / , _/ /    / /_/ // // , _/  | |/ |/ // //    / " << endl;
+              cout << "\\___/\\____/\\____/___/\\____/_/|_| /_/|_/\\____/___/_/|_|   |__/|__/___/_/|_/  " << endl;
+
+              finPartie = true;
+            }
+
+            //Changement de joueur
+            if(tourBlanc){
+              tourBlanc = false;
+            }
+            else{
+              nbTour++;
+              tourBlanc = true;
+            }
+          }
+          else{
+            system("clear");
+            cout << endl <<"/!\\ Déplacement Interdit /!\\" << endl;
+          }
         }
-
+        else{
+          system("clear");
+          cout << endl << "/!\\ Vous ne pouvez choisir une pièce qui n'est pas de votre couleur. /!\\" << endl;
+        }
       }
       else{
-        cout << "DEBUG : Déplacement impossible !!!" << endl;
+        system("clear");
+        cout << endl << "/!\\ Aucune pièces ne se trouve aux coordonnées que vous avez saisi. /!\\" << endl;
       }
-
-      e.affiche();
-
-      //Victoire joueur blanc
-      if(isMat(&jn, &e)){
-
-        cout << "     ______  __  ________  _____    ___  __   ___   _  _______  _      _______  __" << endl;
-        cout << " __ / / __ \\/ / / / __/ / / / _ \\  / _ )/ /  / _ | / |/ / ___/ | | /| / /  _/ |/ /" << endl;
-        cout << "/ // / /_/ / /_/ / _// /_/ / , _/ / _  / /__/ __ |/    / /__   | |/ |/ // //    / " << endl;
-        cout << "\\___/\\____/\\____/___/\\____/_/|_| /____/____/_/ |_/_/|_/\\___/   |__/|__/___/_/|_/  " << endl;
-
-      }
-
-      //Victoire joueur noir
-      if(isMat(&jb, &e)){
-
-        cout << "     ______  __  ________  _____    _  ______  _______    _      _______  __" << endl;
-        cout << " __ / / __ \\/ / / / __/ / / / _ \\  / |/ / __ \\/  _/ _ \\  | | /| / /  _/ |/ /" << endl;
-        cout << "/ // / /_/ / /_/ / _// /_/ / , _/ /    / /_/ // // , _/  | |/ |/ // //    / " << endl;
-        cout << "\\___/\\____/\\____/___/\\____/_/|_| /_/|_/\\____/___/_/|_|   |__/|__/___/_/|_/  " << endl;
-
-      }
-
-      //Changement de joueur
-      if(tourBlanc){
-        tourBlanc = false;
-      }
-      else{
-        nbTour++;
-        tourBlanc = true;
-      }
-
       origine = "";
       destination = "";
     }
     
-    cout << "  ________   __  _______  ____ _   _________ " << endl;
-    cout << " / ___/ _ | /  |/  / __/ / __ \\ | / / __/ _ \\" << endl;
-    cout << "/ (_ / __ |/ /|_/ / _/  / /_/ / |/ / _// , _/" << endl;
-    cout << "\\___/_/ |_/_/  /_/___/  \\____/|___/___/_/|_| " << endl;
+    cout << "              ________   __  _______  ____ _   _________ " << endl;
+    cout << "             / ___/ _ | /  |/  / __/ / __ \\ | / / __/ _ \\" << endl;
+    cout << "            / (_ / __ |/ /|_/ / _/  / /_/ / |/ / _// , _/" << endl;
+    cout << "            \\___/_/ |_/_/  /_/___/  \\____/|___/___/_/|_| " << endl << endl;
 }

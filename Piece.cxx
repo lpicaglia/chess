@@ -58,15 +58,11 @@ Piece::mouvementValide(Echiquier &e, int x, int y)
 {
     // Vérifie si la pièce est sur l'échiquier
     if(x < 1 || x > 8 || y < 1 || y > 8){
-
-        cout << "DEBUG : Destination en dehors de l'échiquier" << endl;
         return false;
     }
 
     // Vérifie si les coordonnées de destination sont différentes des coordonnées d'origine
     if(x==m_x && y == m_y){
-
-        cout << "DEBUG : Coordonnées de destination identique aux coordonnées de d'origine" << endl;
         return false;
     }
 
@@ -74,13 +70,9 @@ Piece::mouvementValide(Echiquier &e, int x, int y)
     if(e.getPiece(x, y)){
         // Vérifie si la pièce présente sur la case est de la meme couleur
         if(e.getPiece(x, y) -> m_white == m_white){
-
-            cout << "DEBUG : PIECE de meme couleur aux coordonnées de destination" << endl;
             return false;
         }
     }
-
-    cout << "DEBUG : Mouvement valide PIECE" << endl;
     return true;
 }
 
@@ -137,6 +129,24 @@ Piece::codePiece()
   return (m_white)?'B': 'n';
 }
 
+vector<int*>
+Piece::ctrlCases(Echiquier &e)
+{
+    vector<int*> m_ctrl;
+
+    for(int i = 1; i < 9 ; i++){
+        for(int j = 1; j < 9; j++){
+            if(mouvementValide(e,i,j)){
+                int* coord = new int[2]();
+                coord[0] = i;
+                coord[1] = j;
+                m_ctrl.push_back(coord);
+            }
+        }
+    }
+    return m_ctrl;
+}
+
 //---------------------------------------------------------------------------
 //                                 Classe Roi
 //---------------------------------------------------------------------------
@@ -165,12 +175,9 @@ Roi::mouvementValide(Echiquier &e, int x, int y)
     if(Piece::mouvementValide(e, x, y)){
 
         if(abs(x-m_x) == 1 || abs(y-m_y) == 1){
-
-            cout << "DEBUG : Mouvement valide ROI" << endl;
             return true;
         }
     }
-    cout << "DEBUG : Mouvement non valide ROI" << endl;
     return false;
 }
 
@@ -197,38 +204,27 @@ Tour::mouvementValide(Echiquier &e, int x, int y)
         // Déplacement horizontale
         if(y == m_y){
 
-            cout << "DEBUG : Déplacement horizontale TOUR" << endl;
-
             // Vérifie si une piece gène le déplacement
             for(int i = min(x, m_x)+1 ; i < max(x, m_x); i++){
                 if(e.getPiece(i,y)){
-
-                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
                     return false;
                 }
             }
-            cout << "DEBUG : Mouvement valide TOUR" << endl;
             return true;
         }
 
         // Déplacement verticale
         if(x == m_x){
 
-            cout << "DEBUG : Déplacement verticale TOUR" << endl;
-
             // Vérifie si une piece gène le déplacement
             for(int i = min(y, m_y)+1 ; i < max(y, m_y); i++){
                 if(e.getPiece(x,i)){
-
-                    cout << "DEBUG : Piece sur le trajet TOUR" << endl;
                     return false;
                 }
             }
-            cout << "DEBUG : Mouvement valide TOUR" << endl;
             return true;
         }
     }
-    cout << "DEBUG : Mouvement non valide TOUR" << endl;
     return false;
 }
 
@@ -264,13 +260,10 @@ Fou::mouvementValide(Echiquier &e, int x, int y)
                 axeY = min(y,m_y)+1;
             }
 
-            cout << "DEBUG : Mouvement diagonal FOU" << endl;
-
             for(int i=min(x,m_x)+1 ; i<max(x,m_x); i++){
 
                 // Vérifie si une piece gène le déplacement
                 if(e.getPiece(i,axeY)){
-                    cout << "DEBUG : Piece sur le trajet du FOU" << endl;
                     return false;
                 }
 
@@ -281,11 +274,9 @@ Fou::mouvementValide(Echiquier &e, int x, int y)
                     axeY++;
                 }
             }
-            cout << "DEBUG : Mouvement valide FOU" << endl;
             return true;
         }
     }
-    cout << "DEBUG : Mouvement non valide FOU" << endl;
     return false;
 }
 
@@ -309,11 +300,8 @@ Reine::mouvementValide(Echiquier &e, int x, int y)
 {
 
     if(Fou::mouvementValide(e,x,y) || Tour::mouvementValide(e,x,y)){
-        cout << "DEBUG : Mouvement valide REINE" << endl;
         return true;
     }
-
-    cout << "DEBUG : Mouvement non valide REINE" << endl;
     return false;
 }
 
@@ -339,12 +327,9 @@ Cavalier::mouvementValide(Echiquier &e, int x, int y)
     if(!Fou::mouvementValide(e,x,y) && !Tour::mouvementValide(e,x,y)){
 
         if((abs(x - m_x) == 2 && abs(y - m_y) == 1) || (abs(x - m_x) == 1 && abs(y - m_y) == 2)){
-            cout << "DEBUG : Mouvement valide CAVALIER" << endl;
             return true;
         }
     }
-
-    cout << "DEBUG : Mouvement non valide CAVALIER" << endl;
     return false;
 }
 
@@ -372,18 +357,14 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
             // Vérifie si le pion s'est déjà déplacé
             if(premierDeplacement && abs(y - m_y) == 2){
 
-                cout << "DEBUG : Premier déplacement d'un pion" << endl;
-
                 // Premier déplacement d'un pion blanc
                 if(m_white && y > m_y){
 
                      // Vérifie si une piece gène le déplacement
                     if(!e.getPiece(m_x,(m_y+1))){
-                        cout << "DEBUG : Mouvement valide PION BLANC" << endl;
                         premierDeplacement = false;
                         return true;
                     }
-                    cout << "DEBUG : Pièce sur le trajet du PION BLANC" << endl;
                 }
 
                 // Premier déplacement d'un pion noir
@@ -391,22 +372,18 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
                     // Vérifie si une piece gène le déplacement
                     if(!e.getPiece(m_x,(m_y-1))){
-                        cout << "DEBUG : Mouvement valide PION NOIR" << endl;
                         premierDeplacement = false;
                         return true;
                     }
-                    cout << "DEBUG : Pièce sur le trajet du PION NOIR" << endl;
                 }
             }
             else{
                 if(y == (m_y+1) && m_white){
-                    cout << "DEBUG : Mouvement valide PION BLANC" << endl;
                     premierDeplacement = false;
                     return true;
                 }
 
                 if(y == (m_y-1) && !m_white){
-                    cout << "DEBUG : Mouvement valide PION NOIR" << endl;
                     premierDeplacement = false;
                     return true;
                 }
@@ -420,13 +397,11 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
         if(Piece* p = e.getPiece(x,y)){
 
             if(m_white && p->isWhite() != m_white && y == (m_y+1)){
-                cout << "DEBUG : Mouvement valide PION BLANC mange pièce." << endl;
                 premierDeplacement = false;
                 return true;
             }
 
             if(!m_white && p->isWhite() != m_white && y == (m_y-1)){
-                cout << "DEBUG : Mouvement valide PION NOIR mange pièce." << endl;
                 premierDeplacement = false;
                 return true;
             }
@@ -438,8 +413,6 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
         if(Piece* p = e.getPiece((m_x-1), m_y)){
             if(p -> codePiece() == 'p' && x == (m_x-1)){
-
-                cout << "DEBUG : Attaque en passant PION BLANC." << endl;
                 e.enleverPiece((m_x-1), m_y);
                 return true;
             }
@@ -447,8 +420,6 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
         if(Piece* p = e.getPiece((m_x+1), m_y)){
             if(p -> codePiece() == 'p' && x == (m_x+1)){
-
-                cout << "DEBUG : Attaque en passant PION BLANC." << endl;
                 e.enleverPiece((m_x+1), m_y);
                 return true;
             }
@@ -460,8 +431,6 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
         if(Piece* p = e.getPiece((m_x-1), m_y)){
             if(p-> codePiece() == 'P' && x == (m_x-1)){
-
-                cout << "DEBUG : Attaque en passant PION NOIR." << endl;
                 e.enleverPiece((m_x-1), m_y);
                 return true;
             }
@@ -469,15 +438,11 @@ Pion::mouvementValide(Echiquier &e, int x, int y)
 
         if(Piece* p = e.getPiece((m_x+1), m_y)){
             if(p -> codePiece() == 'P' && x == (m_x+1)){
-
-                cout << "DEBUG : Attaque en passant PION NOIR." << endl;
                 e.enleverPiece((m_x+1), m_y);
                 return true;
             }
         }
     }
-
-    cout << "DEBUG : Mouvement non valide PION" << endl;
     return false;
 }
 

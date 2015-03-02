@@ -7,6 +7,8 @@
 #if !defined Piece_h
 #define Piece_h
 
+#include <vector>
+
 using namespace std;
 
 //#include "Echiquier.h"
@@ -37,6 +39,7 @@ public:
   bool isBlack();
   void affiche();
   virtual char codePiece();
+  vector<int*> ctrlCases(Echiquier &e);
 };
 
 class Roi : virtual public Piece{
