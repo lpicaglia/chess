@@ -23,7 +23,7 @@ protected:
   int m_x;
   int m_y;
   bool m_white;
-  
+
 public:
   Piece();
   virtual ~Piece();
@@ -43,12 +43,12 @@ public:
 };
 
 class Roi : virtual public Piece{
-
+  
 public:
   Roi(bool white);
   bool mouvementValide(Echiquier &e, int x, int y);
   char codePiece();
-  bool roque();
+  bool roque(Echiquier &e, int x, int y);
 };
 
 class Tour : virtual public Piece{
@@ -86,7 +86,7 @@ public:
 class Pion : virtual public Piece{
 
 private:
-  bool premierDeplacement;
+  bool m_premierDeplacement;
 
 public:
   Pion(int x, int y, bool white);

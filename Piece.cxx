@@ -19,17 +19,16 @@ using namespace std;
 
 Piece::Piece()
 {
-  //cout << "Constructeur Piece" << endl;
+
 }
 
 Piece::~Piece()
 {
-  //cout << "Destructeur Piece" << endl;
+
 }
 
 Piece::Piece(const Piece & autre)
 {
-   //cout << "Constructeur Piece par copie" << endl;
    m_x=autre.m_x;
    m_y=autre.m_y;
    m_white=autre.m_white;
@@ -38,7 +37,6 @@ Piece::Piece(const Piece & autre)
 Piece &
 Piece::operator=(const Piece & autre)
 {
-  //cout << "Operateur affectation Piece" << endl;
   m_x=autre.m_x;
   m_y=autre.m_y;
   m_white=autre.m_white;
@@ -47,7 +45,6 @@ Piece::operator=(const Piece & autre)
 
 Piece::Piece( int x, int y, bool white )
 {
-  //cout << "Constructeur Piece Specialise" << endl;
   m_x = x;
   m_y = y;
   m_white = white;
@@ -119,8 +116,7 @@ Piece::isBlack()
 void
 Piece::affiche()
 {
-  //cout << "Piece: x=" << m_x << " y=" << m_y << " "
-  //     << ( m_white ? "blanche" : "noire" ) << endl;
+
 }
 
 char
@@ -132,6 +128,7 @@ Piece::codePiece()
 vector<int*>
 Piece::ctrlCases(Echiquier &e)
 {
+    // Stock les cases controlé par la pièce
     vector<int*> m_ctrl;
 
     for(int i = 1; i < 9 ; i++){
@@ -153,19 +150,12 @@ Piece::ctrlCases(Echiquier &e)
 
 Roi::Roi(bool white) : Piece(5,(white?1:8),white)
 {
-  //cout << "Constructeur Roi" << endl;
+
 }
 
 bool
-Roi::roque()
-{
-    if(m_white){
-
-    }
-    else{
-
-
-    }
+Roi::roque(Echiquier &e, int x, int y)
+{   
     return false;
 }
 
@@ -173,6 +163,10 @@ bool
 Roi::mouvementValide(Echiquier &e, int x, int y)
 {
     if(Piece::mouvementValide(e, x, y)){
+
+        if(roque(e, x, y)){
+            return true;
+        }
 
         if(abs(x-m_x) == 1 || abs(y-m_y) == 1){
             return true;
@@ -193,7 +187,7 @@ Roi::codePiece()
 
 Tour::Tour(bool white, bool left) : Piece((left?1:8),(white?1:8),white)
 {
-  //cout << "Constructeur Tour" << endl;
+
 }
 
 bool
@@ -292,7 +286,7 @@ Fou::codePiece()
 
 Reine::Reine(bool white) : Piece(4,(white?1:8),white), Fou(white,true), Tour(white,true)
 {
-  //cout << "Constructeur Reine" << endl;
+
 }
 
 bool
@@ -317,7 +311,7 @@ Reine::codePiece()
 
 Cavalier::Cavalier(bool white, bool left) : Piece((left?2:7),(white?1:8),white), Fou(white,true), Tour(white,true)
 {
-  //cout << "Constructeur Cavalier" << endl;
+  
 }
 
 bool
@@ -345,101 +339,103 @@ Cavalier::codePiece()
 
 Pion::Pion(int x, int y, bool white ) : Piece(x,y,white)
 {
-    premierDeplacement = true;
+    m_premierDeplacement = true;
 }
 
 bool
 Pion::mouvementValide(Echiquier &e, int x, int y)
 {
 
-    if(x == m_x){
-        if(!e.getPiece(x,y)){
-            // Vérifie si le pion s'est déjà déplacé
-            if(premierDeplacement && abs(y - m_y) == 2){
+    if(Piece::mouvementValide(e, x, y)){
+        if(x == m_x){
+            if(!e.getPiece(x,y)){
+                // Vérifie si le pion s'est déjà déplacé
+                if(m_premierDeplacement && abs(y - m_y) == 2){
 
-                // Premier déplacement d'un pion blanc
-                if(m_white && y > m_y){
+                    // Premier déplacement d'un pion blanc
+                    if(m_white && y > m_y){
 
-                     // Vérifie si une piece gène le déplacement
-                    if(!e.getPiece(m_x,(m_y+1))){
-                        premierDeplacement = false;
+                         // Vérifie si une piece gène le déplacement
+                        if(!e.getPiece(m_x,(m_y+1))){
+                            m_premierDeplacement = false;
+                            return true;
+                        }
+                    }
+
+                    // Premier déplacement d'un pion noir
+                    if(!m_white && y < m_y){
+
+                        // Vérifie si une piece gène le déplacement
+                        if(!e.getPiece(m_x,(m_y-1))){
+                            m_premierDeplacement = false;
+                            return true;
+                        }
+                    }
+                }
+                else{
+                    if(y == (m_y+1) && m_white){
+                        m_premierDeplacement = false;
+                        return true;
+                    }
+
+                    if(y == (m_y-1) && !m_white){
+                        m_premierDeplacement = false;
                         return true;
                     }
                 }
-
-                // Premier déplacement d'un pion noir
-                if(!m_white && y < m_y){
-
-                    // Vérifie si une piece gène le déplacement
-                    if(!e.getPiece(m_x,(m_y-1))){
-                        premierDeplacement = false;
-                        return true;
-                    }
-                }
             }
-            else{
-                if(y == (m_y+1) && m_white){
-                    premierDeplacement = false;
+        }
+
+        // Attaque du pion en diagonale
+        if(abs(x - m_x) == abs(y - m_y ) && abs(x-m_x) == 1){
+
+            if(Piece* p = e.getPiece(x,y)){
+
+                if(m_white && p->isWhite() != m_white && y == (m_y+1)){
+                    m_premierDeplacement = false;
                     return true;
                 }
 
-                if(y == (m_y-1) && !m_white){
-                    premierDeplacement = false;
+                if(!m_white && p->isWhite() != m_white && y == (m_y-1)){
+                    m_premierDeplacement = false;
                     return true;
                 }
             }
         }
-    }
 
-    // Attaque du pion en diagonale
-    if(abs(x - m_x) == abs(y - m_y ) && abs(x-m_x) == 1){
+        // En passant pion blanc
+        if(m_white && m_y == 5 && y == (m_y+1)){
 
-        if(Piece* p = e.getPiece(x,y)){
-
-            if(m_white && p->isWhite() != m_white && y == (m_y+1)){
-                premierDeplacement = false;
-                return true;
+            if(Piece* p = e.getPiece((m_x-1), m_y)){
+                if(p -> codePiece() == 'p' && x == (m_x-1)){
+                    e.enleverPiece((m_x-1), m_y);
+                    return true;
+                }
             }
 
-            if(!m_white && p->isWhite() != m_white && y == (m_y-1)){
-                premierDeplacement = false;
-                return true;
-            }
-        }
-    }
-
-    // En passant pion blanc
-    if(m_white && m_y == 5 && y == (m_y+1)){
-
-        if(Piece* p = e.getPiece((m_x-1), m_y)){
-            if(p -> codePiece() == 'p' && x == (m_x-1)){
-                e.enleverPiece((m_x-1), m_y);
-                return true;
+            if(Piece* p = e.getPiece((m_x+1), m_y)){
+                if(p -> codePiece() == 'p' && x == (m_x+1)){
+                    e.enleverPiece((m_x+1), m_y);
+                    return true;
+                }
             }
         }
 
-        if(Piece* p = e.getPiece((m_x+1), m_y)){
-            if(p -> codePiece() == 'p' && x == (m_x+1)){
-                e.enleverPiece((m_x+1), m_y);
-                return true;
+        // En passant pion noir
+        if(!m_white && m_y == 4 && y == (m_y-1)){
+
+            if(Piece* p = e.getPiece((m_x-1), m_y)){
+                if(p-> codePiece() == 'P' && x == (m_x-1)){
+                    e.enleverPiece((m_x-1), m_y);
+                    return true;
+                }
             }
-        }
-    }
 
-    // En passant pion noir
-    if(!m_white && m_y == 4 && y == (m_y-1)){
-
-        if(Piece* p = e.getPiece((m_x-1), m_y)){
-            if(p-> codePiece() == 'P' && x == (m_x-1)){
-                e.enleverPiece((m_x-1), m_y);
-                return true;
-            }
-        }
-
-        if(Piece* p = e.getPiece((m_x+1), m_y)){
-            if(p -> codePiece() == 'P' && x == (m_x+1)){
-                e.enleverPiece((m_x+1), m_y);
-                return true;
+            if(Piece* p = e.getPiece((m_x+1), m_y)){
+                if(p -> codePiece() == 'P' && x == (m_x+1)){
+                    e.enleverPiece((m_x+1), m_y);
+                    return true;
+                }
             }
         }
     }
